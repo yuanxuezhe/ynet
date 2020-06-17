@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/signal"
 	"time"
+	"ynet"
 	network "ynet/tcp"
 )
 
@@ -40,14 +41,8 @@ func Handler(conn net.Conn) {
 }
 
 func main() {
-	tcpServer := &network.TCPServer{
-		Addr:            ":8080",
-		MaxConnNum:      100,
-		PendingWriteNum: 1000,
-		Callback:        Handler,
-	}
+	tcpServer := ynet.NewTcpserver(":8080", Handler)
 	tcpServer.Start()
-
 	// close
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, os.Kill)
