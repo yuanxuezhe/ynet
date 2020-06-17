@@ -9,20 +9,33 @@ import (
 	network "ynet/tcp"
 )
 
+//func Handler1(conn net.Conn) {
+//	for {
+//
+//		msgs, err := network.ReadMsgs(conn)
+//		if err != nil {
+//			break
+//		}
+//		for _, msg := range msgs {
+//			fmt.Println(msg)
+//			network.SendMsg(conn,[]byte("Hello,Recv msg:" + msg))
+//		}
+//
+//		time.Sleep(10 * time.Millisecond)
+//	}
+//}
+
 func Handler(conn net.Conn) {
 	for {
-		//_,err := io.Copy(conn, conn)
-		//buff, err := network.ReadMsg(conn)
-		buff, err := network.ReadMsgs(conn)
+		buff, err := network.ReadMsg(conn)
 		if err != nil {
 			break
 		}
-		fmt.Println(buff)
 
-		//network.SendMsg(conn,[]byte("Hello,Recv msg:" + string(buff)))
+		fmt.Println(string(buff))
+		network.SendMsg(conn, []byte("Hello,Recv msg:"+string(buff)))
 
-		//network.SendMsg(conn,buff)
-		time.Sleep(10 * time.Millisecond)
+		time.Sleep(1 * time.Millisecond)
 	}
 }
 

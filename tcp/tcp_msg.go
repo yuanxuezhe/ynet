@@ -115,7 +115,7 @@ func ReadMsgs(conn net.Conn) ([]string, error) {
 	for {
 		buff, err := ReadMsg(conn)
 		if err != nil {
-			if err.Error() == "EOF" {
+			if err.Error() == "EOF" && len(list) > 0 {
 				return list, nil
 			} else {
 				return nil, err
