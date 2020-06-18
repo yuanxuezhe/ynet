@@ -1,8 +1,8 @@
 package ynet
 
 import (
+	network "gitee.com/yuanxuezhe/ynet/tcp"
 	"net"
-	network "ynet/tcp"
 )
 
 type Callback func(conn net.Conn)

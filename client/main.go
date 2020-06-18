@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
+	"gitee.com/yuanxuezhe/ynet/tcp"
+	"gitee.com/yuanxuezhe/ynet/yconnpool"
 	"net"
 	"strconv"
-	"ynet/tcp"
-	"ynet/yconnpool"
 
 	//"io/ioutil"
 	//"testing"

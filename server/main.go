@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
+	"gitee.com/yuanxuezhe/ynet"
+	network "gitee.com/yuanxuezhe/ynet/tcp"
 	"net"
 	"os"
 	"os/signal"
 	"time"
-	"ynet"
-	network "ynet/tcp"
 )
 
 //func Handler1(conn net.Conn) {
