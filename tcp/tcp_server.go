@@ -2,6 +2,7 @@ package network
 
 import (
 	"fmt"
+	conn "gitee.com/yuanxuezhe/ynet/Conn"
 	"log"
 	"net"
 	"sync"
@@ -17,7 +18,7 @@ type TCPServer struct {
 	mutexConns      sync.Mutex
 	wgLn            sync.WaitGroup
 	wgConns         sync.WaitGroup
-	Callback        func(conn net.Conn)
+	Callback        func(conn conn.CommConn)
 }
 
 func (server *TCPServer) Start() {
@@ -81,9 +82,11 @@ func (server *TCPServer) run() {
 
 		server.wgConns.Add(1)
 
+		tcpConn := newTCPConn(conn, server.PendingWriteNum)
+
 		go func() {
 			//agent.Run()
-			server.Callback(conn)
+			server.Callback(tcpConn)
 
 			server.mutexConns.Lock()
 			delete(server.conns, conn)

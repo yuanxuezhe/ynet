@@ -3,8 +3,7 @@ package main
 import (
 	"fmt"
 	"gitee.com/yuanxuezhe/ynet"
-	network "gitee.com/yuanxuezhe/ynet/tcp"
-	"net"
+	conn "gitee.com/yuanxuezhe/ynet/Conn"
 	"os"
 	"os/signal"
 	"time"
@@ -26,15 +25,18 @@ import (
 //	}
 //}
 
-func Handler(conn net.Conn) {
+func Handler(conn conn.CommConn) {
 	for {
-		buff, err := network.ReadMsg(conn)
+		//buff, err := network.ReadMsg(conn)
+		buff, err := conn.ReadMsg()
 		if err != nil {
 			break
 		}
 
 		fmt.Println(string(buff))
-		network.SendMsg(conn, []byte("Hello,Recv msg:"+string(buff)))
+
+		conn.WriteMsg([]byte("Hello,Recv msg:" + string(buff)))
+		//network.SendMsg(conn, []byte("Hello,Recv msg:"+string(buff)))
 
 		time.Sleep(1 * time.Millisecond)
 	}
@@ -43,6 +45,10 @@ func Handler(conn net.Conn) {
 func main() {
 	tcpServer := ynet.NewTcpserver(":8080", Handler)
 	tcpServer.Start()
+
+	wsServer := ynet.NewWsserver(":8090", Handler)
+	wsServer.Start()
+
 	// close
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, os.Kill)
