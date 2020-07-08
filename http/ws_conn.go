@@ -3,7 +3,6 @@ package network
 import (
 	"errors"
 	"github.com/gorilla/websocket"
-	"log"
 	"net"
 	"sync"
 )
@@ -12,8 +11,8 @@ type WebsocketConnSet map[*websocket.Conn]struct{}
 
 type WSConn struct {
 	sync.Mutex
-	conn      *websocket.Conn
-	writeChan chan []byte
+	conn *websocket.Conn
+	//writeChan chan []byte
 	maxMsgLen uint32
 	closeFlag bool
 }
@@ -50,7 +49,7 @@ func (wsConn *WSConn) doDestroy() {
 	wsConn.conn.Close()
 
 	if !wsConn.closeFlag {
-		close(wsConn.writeChan)
+		//close(wsConn.writeChan)
 		wsConn.closeFlag = true
 	}
 }
@@ -69,19 +68,20 @@ func (wsConn *WSConn) Close() {
 		return
 	}
 
-	wsConn.doWrite(nil)
+	//wsConn.doWrite(nil)
 	wsConn.closeFlag = true
 }
 
-func (wsConn *WSConn) doWrite(b []byte) {
-	if len(wsConn.writeChan) == cap(wsConn.writeChan) {
-		log.Println("close conn: channel full")
-		wsConn.doDestroy()
-		return
-	}
-
-	wsConn.writeChan <- b
-}
+//
+//func (wsConn *WSConn) doWrite(b []byte) {
+//	if len(wsConn.writeChan) == cap(wsConn.writeChan) {
+//		log.Println("close conn: channel full")
+//		wsConn.doDestroy()
+//		return
+//	}
+//
+//	wsConn.writeChan <- b
+//}
 
 func (wsConn *WSConn) LocalAddr() net.Addr {
 	return wsConn.conn.LocalAddr()
