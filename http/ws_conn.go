@@ -61,15 +61,16 @@ func (wsConn *WSConn) Destroy() {
 	wsConn.doDestroy()
 }
 
-func (wsConn *WSConn) Close() {
+func (wsConn *WSConn) Close() error {
 	wsConn.Lock()
 	defer wsConn.Unlock()
 	if wsConn.closeFlag {
-		return
+		return nil
 	}
 
 	//wsConn.doWrite(nil)
 	wsConn.closeFlag = true
+	return nil
 }
 
 //

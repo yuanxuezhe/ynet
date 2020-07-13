@@ -58,15 +58,16 @@ func (tcpConn *TCPConn) Destroy() {
 	tcpConn.doDestroy()
 }
 
-func (tcpConn *TCPConn) Close() {
+func (tcpConn *TCPConn) Close() error {
 	tcpConn.Lock()
 	defer tcpConn.Unlock()
 	if tcpConn.closeFlag {
-		return
+		return nil
 	}
 
 	//tcpConn.doWrite(nil)
 	tcpConn.closeFlag = true
+	return nil
 }
 
 //func (tcpConn *TCPConn) doWrite(b []byte) {

@@ -7,6 +7,6 @@ type CommConn interface {
 	WriteMsg([]byte) error
 	LocalAddr() net.Addr
 	RemoteAddr() net.Addr
-	Close()
+	Close() error
 	Destroy()
 }
