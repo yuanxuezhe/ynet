@@ -1,7 +1,6 @@
 package network
 
 import (
-	"fmt"
 	conn "gitee.com/yuanxuezhe/ynet/Conn"
 	"log"
 	"net"
@@ -99,16 +98,12 @@ func (server *TCPServer) run() {
 
 func (server *TCPServer) Close() {
 	server.ln.Close()
-	fmt.Println(0)
 	server.wgLn.Wait()
-	fmt.Println(1)
 	server.mutexConns.Lock()
 	for conn := range server.conns {
 		conn.Close()
 	}
-	fmt.Println(2)
 	server.conns = nil
 	server.mutexConns.Unlock()
 	server.wgConns.Wait()
-	fmt.Println(3)
 }
