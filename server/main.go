@@ -33,8 +33,6 @@ func Handler(conn conn.CommConn) {
 			break
 		}
 
-		fmt.Println(string(buff))
-
 		conn.WriteMsg([]byte("Hello,Recv msg:" + string(buff)))
 		//network.SendMsg(conn, []byte("Hello,Recv msg:"+string(buff)))
 
@@ -42,12 +40,45 @@ func Handler(conn conn.CommConn) {
 	}
 }
 
+func Handler1(conn conn.CommConn) {
+	//buff, err := network.ReadMsg(conn)
+	buff, err := conn.ReadMsg()
+	fmt.Println("1111111111111")
+	if err != nil {
+		return
+	}
+	fmt.Println("22222222222222")
+	fmt.Println("Recv:", string(buff))
+
+	conn.WriteMsg([]byte("Hello,Recv msg:" + string(buff)))
+}
+
 func main() {
-	tcpServer := ynet.NewTcpserver(":8080", Handler)
+	tcpServer := ynet.NewTcpserver(
+		":8080",
+		10,
+		1000,
+		1000,
+		Handler,
+	)
 	tcpServer.Start()
 
-	wsServer := ynet.NewWsserver(":8090", Handler)
+	wsServer := ynet.NewWsserver(
+		":8081",
+		15,
+		1000,
+		1000,
+		Handler,
+	)
 	wsServer.Start()
+
+	httpServer := ynet.NewHttpserver(
+		":8082",
+		1000,
+		1000,
+		Handler1,
+	)
+	httpServer.Start()
 
 	// close
 	c := make(chan os.Signal, 1)

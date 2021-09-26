@@ -9,9 +9,9 @@ import (
 
 func main() {
 	for i := 0; ; i++ {
-		conn := ynet.NewTcpclient(":8080")
+		conn := ynet.NewTcpclient("192.168.2.3:8080")
 		//conn := ynet.NewWsclient("ws://192.168.120.37:8090")
-		err := conn.WriteMsg([]byte("YUANSHUAI<==>WANYUAN " + strconv.Itoa(i)))
+		err := conn.WriteMsg([]byte("YUANSHUAI<==>WANYUAN TCP " + strconv.Itoa(i)))
 		if err != nil {
 			fmt.Printf("%s", err)
 		}
@@ -22,8 +22,8 @@ func main() {
 		fmt.Println(conn.LocalAddr(), "==>", conn.RemoteAddr(), "    ", string(buff))
 
 		//conn := ynet.NewTcpclient(":8080")
-		conn = ynet.NewWsclient("ws://192.168.120.37:8090")
-		err = conn.WriteMsg([]byte("YUANSHUAI<==>WANYUAN " + strconv.Itoa(i)))
+		conn = ynet.NewWsclient("ws://192.168.2.3:8081")
+		err = conn.WriteMsg([]byte("YUANSHUAI<==>WANYUAN W S " + strconv.Itoa(i)))
 		if err != nil {
 			fmt.Printf("%s", err)
 		}

@@ -12,6 +12,7 @@ type TCPServer struct {
 	Addr            string
 	MaxConnNum      int
 	PendingWriteNum int
+	MaxMsgLen       uint32
 	ln              net.Listener
 	conns           ConnSet
 	mutexConns      sync.Mutex
